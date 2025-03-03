@@ -202,5 +202,6 @@
     "**/*.ts?(x)": [
       "eslint --fix"
     ]
-  }
+  },
+  "__npminstall_done": false
 }

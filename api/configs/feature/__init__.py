@@ -561,6 +561,44 @@ class AuthConfig(BaseSettings):
         default=86400,
     )
 
+    # ================== Start Standard OAuth Config ==================
+    # GPA Modify 2025-03-04
+    ENABLE_STANDARD_OAUTH: bool = Field(
+        description="Enable or disable standard OAuth login",
+        default=False,
+    )
+
+    STANDARD_OAUTH_CLIENT_ID: Optional[str] = Field(
+        description="Standard OAuth client ID",
+        default=None,
+    )
+
+    STANDARD_OAUTH_CLIENT_SECRET: Optional[str] = Field(
+        description="Standard OAuth client secret",
+        default=None,
+    )
+
+    STANDARD_OAUTH_AUTH_URL: Optional[str] = Field(
+        description="Standard OAuth authorize URL",
+        default=None,
+    )
+
+    STANDARD_OAUTH_TOKEN_URL: Optional[str] = Field(
+        description="Standard OAuth token URL",
+        default=None,
+    )
+
+    STANDARD_OAUTH_USER_INFO_URL: Optional[str] = Field(
+        description="Standard OAuth user info URL",
+        default=None,
+    )
+
+    STANDARD_OAUTH_SCOPE: Optional[str] = Field(
+        description="Standard OAuth scope",
+        default="openid email",
+    )
+    # ================== End Standard OAuth Config ==================
+
 
 class ModerationConfig(BaseSettings):
     """

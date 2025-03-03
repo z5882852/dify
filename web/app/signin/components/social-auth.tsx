@@ -5,6 +5,8 @@ import Button from '@/app/components/base/button'
 import { apiPrefix } from '@/config'
 import classNames from '@/utils/classnames'
 import { getPurifyHref } from '@/utils'
+import { Lock01 } from '@/app/components/base/icons/src/vender/solid/security'
+
 
 type SocialAuthProps = {
   disabled?: boolean
@@ -55,6 +57,21 @@ export default function SocialAuth(props: SocialAuthProps) {
             } />
             <span className="truncate">{t('login.withGoogle')}</span>
           </>
+        </Button>
+      </a>
+    </div>
+    <div className='w-full'>
+      <a href={getOAuthLink('/oauth/login/standard')}>
+        <Button
+          disabled={props.disabled}
+          className='w-full'
+        >
+          <span className={
+            classNames(
+              'w-5 h-5 mr-2',
+            )
+          } />
+          <span className="truncate">{t('login.withStandard')}</span>
         </Button>
       </a>
     </div>

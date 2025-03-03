@@ -14,7 +14,7 @@ from constants.languages import languages
 from events.tenant_event import tenant_was_created
 from extensions.ext_database import db
 from libs.helper import extract_remote_ip
-from libs.oauth import GitHubOAuth, GoogleOAuth, OAuthUserInfo
+from libs.oauth import GitHubOAuth, GoogleOAuth, OAuthUserInfo, StandardOAuth
 from models import Account
 from models.account import AccountStatus
 from services.account_service import AccountService, RegisterService, TenantService
@@ -44,7 +44,34 @@ def get_oauth_providers():
                 redirect_uri=dify_config.CONSOLE_API_URL + "/console/api/oauth/authorize/google",
             )
 
-        OAUTH_PROVIDERS = {"github": github_oauth, "google": google_oauth}
+        # ====== Start Add Standard OAuth ======
+        # GPA Modify 2025-03-04
+        if dify_config.ENABLE_STANDARD_OAUTH:
+            if None in [
+                dify_config.STANDARD_OAUTH_CLIENT_ID,
+                dify_config.STANDARD_OAUTH_CLIENT_SECRET,
+                dify_config.STANDARD_OAUTH_AUTH_URL,
+                dify_config.STANDARD_OAUTH_TOKEN_URL,
+                dify_config.STANDARD_OAUTH_USER_INFO_URL,
+                dify_config.STANDARD_OAUTH_SCOPE,
+            ]:
+                logging.warning("Standard OAuth is enabled but some required configurations are missing.")
+                standard_oauth = None
+            else:
+                standard_oauth = StandardOAuth(
+                    client_id=dify_config.STANDARD_OAUTH_CLIENT_ID,
+                    client_secret=dify_config.STANDARD_OAUTH_CLIENT_SECRET,
+                    redirect_uri=dify_config.CONSOLE_API_URL + "/console/api/oauth/authorize/standard",
+                    auth_url=dify_config.STANDARD_OAUTH_AUTH_URL,
+                    token_url=dify_config.STANDARD_OAUTH_TOKEN_URL,
+                    user_info_url=dify_config.STANDARD_OAUTH_USER_INFO_URL,
+                    scope=dify_config.STANDARD_OAUTH_SCOPE,
+                )
+        else:
+            standard_oauth = None
+
+        OAUTH_PROVIDERS = {"github": github_oauth, "google": google_oauth, "standard": standard_oauth}
+        # ====== End Add Standard OAuth ======
         return OAUTH_PROVIDERS
 
 
